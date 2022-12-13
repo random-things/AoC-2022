@@ -30,35 +30,32 @@ def compare_lists(list1, list2):
 
 
 with open("input.txt") as file:
-    lines = [l.strip() for l in file.readlines() if l.strip() != ""]
+    lines = list(map(eval, [l.strip() for l in file.readlines() if l.strip() != ""]))
 
     # Part 1
     list_index = 0
     indicies = []
     for i in range(0, len(lines), 2):
         list_index += 1
-        list1 = eval(lines[i])
-        list2 = eval(lines[i+1])
 
-        result = compare_lists(list1, list2)
+        result = compare_lists(lines[i], lines[i + 1])
         if result:
             indicies.append(list_index)
 
     print(sum(indicies))
 
     # Part 2
-    packets = list(map(eval, lines))
     delimiters = [[[2]], [[6]]]
-    packets.extend(delimiters)
-    sorted_packets = [packets[0]]
-    for i in range(1, len(packets)):
+    lines.extend(delimiters)
+    sorted_packets = [lines[0]]
+    for i in range(1, len(lines)):
         for j in range(0, len(sorted_packets)):
-            if compare_lists(packets[i], sorted_packets[j]):
-                sorted_packets.insert(j, packets[i])
+            if compare_lists(lines[i], sorted_packets[j]):
+                sorted_packets.insert(j, lines[i])
                 break
             else:
                 if j == len(sorted_packets) - 1:
-                    sorted_packets.append(packets[i])
+                    sorted_packets.append(lines[i])
 
     decoder_key: int = 1
     for delimiter in delimiters:
