@@ -1,5 +1,6 @@
 import dataclasses
 import math
+import time
 from typing import List, ForwardRef, Dict, Tuple, Set
 
 
@@ -118,10 +119,16 @@ with open("input.txt") as file:
 
     # Part 2
     path_length: List[int] = []
+    loc_count: int = 0
+    time_start = time.time()
     for location in m.locations:
         if location.z == 0:
+            loc_count += 1
             path = m.find_shortest_path_astar(location, m.end_location)
             if path is not None:
                 path_length.append(len(path) - 1)
+    time_end = time.time()
+
+    print(f"Time: {time_end - time_start}s for {loc_count} locations")
 
     print(min(path_length))
